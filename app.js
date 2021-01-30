@@ -1,5 +1,6 @@
 const express=require('express');
 const bodyParser = require('body-parser');
+const Joi=require('joi');
 
 const app=express();
 
@@ -9,8 +10,12 @@ const users=[
    {id:3,name:"arsal azeem"}
 ]
 app.use(bodyParser.json());
-app.get('/', function (req, res) {
-    res.send('This is get end point')
+app.post('/joitest', function (req, res) {
+  const schema = Joi.object({ name: Joi.string() .min(6) .required(),
+    });
+    
+    const validation = schema.validate(req.body);
+    res.send(validation);
   });
 // let myFunction = (req, res, next) => {
 //   console.log('i am hererer', req.body);
@@ -20,22 +25,14 @@ app.get('/', function (req, res) {
 //   res.json({ data: req.body });
 // };
 app.post('/collections/delete',(req,res)=>{
-  console.log('/collections/delete');
-  // (req.body["name"]=="arsal") ? res.send(`Welcome dear ${req.body["name"]}`) : res.send(`welcome ${req.body["name"]}`)
-  const found = users.find(num => num["id"] == req.body["id"]);
- if (found){
-   res.send(found);
- }
- else {
-   res.send("The id does not exits");
- }
+  console.log("I am working");
+  res.send("Working");
   }); 
-  app.post('/fetch/collections',(req,res)=>{
-  console.log('/fetch/collections');
-  // (req.body["name"]=="arsal") ? res.send(`Welcome dear ${req.body["name"]}`) : res.send(`welcome ${req.body["name"]}`)
-  users.push({name:req.body["name"]});
-  res.send(users);
-  }); 
-app.listen(3000,()=>{
-  console.log("Listening on port 3000");
+
+  app.get('/fetch/detail/:id',(req,res)=>{
+    console.log(req.params.id);
+  });
+  const port=process.env.PORT || 3000;
+app.listen(port,()=>{
+  console.log(`listening on port ${port}`);
 });
