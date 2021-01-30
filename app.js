@@ -1,8 +1,10 @@
 const express=require('express');
 const bodyParser = require('body-parser');
 const Joi=require('joi');
-
+const Logger=require('./authentication');
 const app=express();
+
+app.use(Logger);
 
 const users=[
    {id:1,name:"arsal azeem"},
