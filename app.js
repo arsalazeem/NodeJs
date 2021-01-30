@@ -2,10 +2,13 @@ const express=require('express');
 const bodyParser = require('body-parser');
 const Joi=require('joi');
 const Logger=require('./authentication');
+const morgan=require('morgan');
+const helmet=require('helmet');
 const app=express();
 
 app.use(Logger);
-
+app.use(helmet());
+app.use(morgan('tiny'));
 const users=[
    {id:1,name:"arsal azeem"},
    {id:2,name:"arsal azeem"},
