@@ -10,18 +10,30 @@ app.use(Logger);
 app.use(helmet());
 app.use(morgan('tiny'));
 const users=[
-   {id:1,name:"arsal azeem"},
-   {id:2,name:"arsal azeem"},
-   {id:3,name:"arsal azeem"}
+   {id:1,name:"arsal azeem"}
 ]
 app.use(bodyParser.json());
+
+const appendUser=(value)=>{
+  var element={};
+  element.id=Math.floor((Math.random() * 100000) + 1);
+  element.name=value;
+  users.push(element);
+}
 app.post('/joitest', function (req, res) {
-  const schema = Joi.object({ name: Joi.string() .min(6) .required(),
+  if (req.body.name.length<1){
+    res.send("Lenght of name should be greater then 0");
+    return false;
+  }
+  else {
+  // const schema = Joi.object({ name: Joi.string() .min(6) .required(),
+  appendUser(req.body.name);
+  res.send(users);
+  }
     });
     
-    const validation = schema.validate(req.body);
-    res.send(validation);
-  });
+    // const validation = schema.validate(req.body);
+    // res.send(validation);
 // let myFunction = (req, res, next) => {
 //   console.log('i am hererer', req.body);
 //   return next();
@@ -29,6 +41,7 @@ app.post('/joitest', function (req, res) {
 // let responseFunction = (req, res, next) => {
 //   res.json({ data: req.body });
 // };
+
 app.post('/collections/delete',(req,res)=>{
   console.log("I am working");
   res.send("Working");
@@ -36,6 +49,9 @@ app.post('/collections/delete',(req,res)=>{
 
   app.get('/fetch/detail/:id',(req,res)=>{
     console.log(req.params.id);
+  });
+  app.get('/',(req,res)=>{
+    res.send("Hei how are you");
   });
   const port=process.env.PORT || 3000;
 app.listen(port,()=>{
